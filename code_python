@@ -1,0 +1,67 @@
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Game constants
+WIDTH, HEIGHT = 300, 600
+BLOCK_SIZE = 30
+COLUMNS, ROWS = WIDTH // BLOCK_SIZE, HEIGHT // BLOCK_SIZE
+WHITE, BLACK = (255, 255, 255), (0, 0, 0)
+
+# Tetromino shapes
+SHAPES = [
+    [[1, 1, 1, 1]],
+    [[1, 1], [1, 1]],
+    [[0, 1, 0], [1, 1, 1]],
+    [[1, 1, 0], [0, 1, 1]],
+    [[0, 1, 1], [1, 1, 0]]
+]
+
+# Initialize screen
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Blockchain Tetris")
+clock = pygame.time.Clock()
+
+def draw_grid():
+    for x in range(0, WIDTH, BLOCK_SIZE):
+        pygame.draw.line(screen, WHITE, (x, 0), (x, HEIGHT))
+    for y in range(0, HEIGHT, BLOCK_SIZE):
+        pygame.draw.line(screen, WHITE, (0, y), (WIDTH, y))
+
+class Tetromino:
+    def __init__(self, shape):
+        self.shape = shape
+        self.x = COLUMNS // 2 - len(shape[0]) // 2
+        self.y = 0
+
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+def store_score(score):
+    print(f"Score stored: {score}")  # Mock blockchain interaction
+
+# Game loop
+def main():
+    running = True
+    piece = Tetromino(random.choice(SHAPES))
+    score = 0
+    
+    while running:
+        screen.fill(BLACK)
+        draw_grid()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        
+        piece.move(0, 1)
+        pygame.display.flip()
+        clock.tick(10)
+    
+    store_score(score)
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
